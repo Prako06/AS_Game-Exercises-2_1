@@ -14,6 +14,8 @@ public class PlayerMovement : MonoBehaviour
 
     public bool grounded { get; private set; }
     public bool jumping { get; private set; }
+    public bool running => Mathf.Abs(velocity.x) > 0.25f || Mathf.Abs(inputAxis) > 0.25f;
+
 
 
     private Vector2 velocity;
@@ -42,6 +44,12 @@ public class PlayerMovement : MonoBehaviour
     {
         inputAxis = Input.GetAxis("Horizontal");
         velocity.x = Mathf.MoveTowards(velocity.x, inputAxis * moveSpeed, moveSpeed * Time.deltaTime);
+
+        if (velocity.x > 0f) {
+            transform.eulerAngles = Vector3.zero;
+        } else if (velocity.x < 0f) {
+            transform.eulerAngles = new Vector3(0f, 180f, 0f);
+        }
     }
 
     private void GroundedMovement()
@@ -76,4 +84,16 @@ public class PlayerMovement : MonoBehaviour
 
         rigidbody2D.MovePosition(position);
     }
+
+     private void OnCollisionEnter2D(Collision2D collision)
+     {
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Enemy"))
+        {
+            if (transform.DotTest(collision.transform, Vector2.down))
+            {
+                velocity.y = jumpForce / 2f;
+                jumping = true;
+            }
+        }
+     }
 }
