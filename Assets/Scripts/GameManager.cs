@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
-
+using UnityEngine.UI;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
@@ -9,15 +9,11 @@ public class GameManager : MonoBehaviour
     public int stage { get; private set; }
     public int lives { get; private set; }
     public int gems { get; private set; }
-
     private void Awake()
     {
-        if (Instance != null)
-        {
+        if (Instance != null) {
             DestroyImmediate(gameObject);
-        }
-        else
-        {
+        } else {
             Instance = this;
             DontDestroyOnLoad(gameObject);
         }
@@ -25,8 +21,7 @@ public class GameManager : MonoBehaviour
 
     private void OnDestroy()
     {
-        if (Instance == this)
-        {
+        if (Instance == this) {
             Instance = null;
         }
     }
@@ -34,7 +29,6 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         Application.targetFrameRate = 60;
-
         NewGame();
     }
 
@@ -42,7 +36,6 @@ public class GameManager : MonoBehaviour
     {
         lives = 3;
         gems = 0;
-
         LoadLevel(1, 1);
     }
 
@@ -67,7 +60,7 @@ public class GameManager : MonoBehaviour
     public void ResetLevel()
     {
         lives--;
-
+        Debug.Log(lives);
         if (lives > 0)
         {
             LoadLevel(world, stage);
@@ -86,7 +79,6 @@ public class GameManager : MonoBehaviour
      public void AddCoin()
     {
         gems++;
-
         if (gems == 100)
         {
             gems = 0;
