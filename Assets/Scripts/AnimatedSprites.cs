@@ -22,6 +22,7 @@ public class AnimatedSprites : MonoBehaviour
     private void OnDisable()
     {
         CancelInvoke();
+        //eeeab
     }
 
     private void Animate()
